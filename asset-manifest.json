@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/reactive-dog/static/css/main.ed7a8b4f.chunk.css",
+    "main.js": "/reactive-dog/static/js/main.44429a4f.chunk.js",
+    "main.js.map": "/reactive-dog/static/js/main.44429a4f.chunk.js.map",
+    "runtime-main.js": "/reactive-dog/static/js/runtime-main.212cfe27.js",
+    "runtime-main.js.map": "/reactive-dog/static/js/runtime-main.212cfe27.js.map",
+    "static/css/2.528a5c1d.chunk.css": "/reactive-dog/static/css/2.528a5c1d.chunk.css",
+    "static/js/2.99995cec.chunk.js": "/reactive-dog/static/js/2.99995cec.chunk.js",
+    "static/js/2.99995cec.chunk.js.map": "/reactive-dog/static/js/2.99995cec.chunk.js.map",
+    "index.html": "/reactive-dog/index.html",
+    "static/css/2.528a5c1d.chunk.css.map": "/reactive-dog/static/css/2.528a5c1d.chunk.css.map",
+    "static/css/main.ed7a8b4f.chunk.css.map": "/reactive-dog/static/css/main.ed7a8b4f.chunk.css.map",
+    "static/js/2.99995cec.chunk.js.LICENSE.txt": "/reactive-dog/static/js/2.99995cec.chunk.js.LICENSE.txt",
+    "static/media/semantic.min.css": "/reactive-dog/static/media/outline-icons.ddae9b1b.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.212cfe27.js",
+    "static/css/2.528a5c1d.chunk.css",
+    "static/js/2.99995cec.chunk.js",
+    "static/css/main.ed7a8b4f.chunk.css",
+    "static/js/main.44429a4f.chunk.js"
+  ]
+}
