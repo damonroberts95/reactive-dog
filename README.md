@@ -6,6 +6,8 @@ The compiled and built app is avaliable here: https://damonroberts95.github.io/r
 
 To run the development project, clone or download the repo, and run `npm start` in its directory. 
 
+All images and breeds are credited to [dog.ceo](https://dog.ceo/)! Good job hosting and maintaining their pack of dogs and API.
+
 # Features:
 * Dogs can be searched for.
 * Dogs already in the pack cannot be added again.
