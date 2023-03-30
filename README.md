@@ -16,6 +16,6 @@ All images and breeds are credited to [dog.ceo](https://dog.ceo/)! Good job host
 * The amount of dogs in the pack are counted.
 
 # Issues:
-* Search/Select input isn't great, currently it takes expands fully when clicked. It also doesn't seem to fire onChange until a breed has been clicked on, so typing the name still requires the user to click on the breed they want. 
+* Search/Select input isn't great, currently it expands fully when clicked. It also doesn't seem to fire onChange until a breed has been clicked on, so typing the name still requires the user to click on the breed they want. 
 * Naming conventions could be improved.
 * Would be nice to store the state in a cookie so the dogs survive a page refresh.
