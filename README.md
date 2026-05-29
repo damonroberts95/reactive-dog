@@ -1,21 +1,38 @@
-# DogMatic Dog Listing App
+# DogMatic — Dog Listing App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Search the [dog.ceo](https://dog.ceo/) breed library and build your own pack of
+dogs. All images and breeds are credited to dog.ceo — thanks for hosting and
+maintaining the pack of dogs and API!
 
-The compiled and built app is avaliable here: https://damonroberts95.github.io/reactive-dog/
+**Live:** https://damonroberts95.github.io/reactive-dog/
 
-To run the development project, clone or download the repo, run `npm install` then `npm start` from a terminal in its directory. 
+## Run locally
 
-All images and breeds are credited to [dog.ceo](https://dog.ceo/)! Good job hosting and maintaining their pack of dogs and API.
+```bash
+npm install
+npm start        # dev server at http://localhost:3000
+npm run build    # production build into ./build
+```
 
-# Features:
-* Dogs can be searched for.
-* Dogs already in the pack cannot be added again.
-* Adding a random dog also can't create duplicates.
-* The dog selection list filters out dogs which have been selected.
-* The amount of dogs in the pack are counted.
+## Features
 
-# Issues:
-* Search/Select input isn't great, currently it expands fully when clicked. It also doesn't seem to fire onChange until a breed has been clicked on, so typing the name still requires the user to click on the breed they want. 
-* Naming conventions could be improved.
-* Would be nice to store the state in a cookie so the dogs survive a page refresh.
+- Type to fuzzy-search breeds; add with click or keyboard (↑/↓, Enter).
+- Add a random breed in one click.
+- No duplicates — already-added breeds drop out of the search and random picker.
+- Your pack is saved to `localStorage`, so it survives a page refresh.
+- Live count of dogs in your pack.
+
+## Tech
+
+- React 18 + Create React App (`react-scripts` 5)
+- [fuse.js](https://fusejs.io/) for fuzzy search
+- Deployed to GitHub Pages automatically via GitHub Actions
+  (`.github/workflows/deploy.yml`) on every push to `main`.
+
+## History
+
+Originally React 17 / `react-scripts` 4 with `react-select-search`. Modernised:
+upgraded React + tooling (fixing the Node 17+ / OpenSSL build break), replaced
+the select with a custom accessible combobox (filters as you type, full keyboard
+support), added localStorage persistence, image loading/error states, cleaner
+naming, and an Actions-based deploy.

@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-var DATA = [];
-
-ReactDOM.render(
-    <App dogs={DATA}/>,
-  document.getElementById('main')
+const container = document.getElementById('main');
+const root = createRoot(container);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );

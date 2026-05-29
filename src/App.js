@@ -1,92 +1,84 @@
+import { useState, useEffect, useMemo } from "react";
 import Dog from "./components/Dog";
-import DogSelect from "./components/DogSelect";
+import DogSearch from "./components/DogSearch";
 import RandomDog from "./components/RandomDog";
-import React, { useState, useEffect } from "react";
 
-function App(props) {  
+const API = "https://dog.ceo/api";
+const STORAGE_KEY = "dogmatic.pack";
 
-  const [masterDogList, setMasterDogList] = useState();
-  const [dogOptions, setDogOptions] = useState([{ 'name': '', 'value': '' }]);
-  const [dogs, setDogs] = useState(props.dogs);
-
-  const dogNoun = dogs.length !== 1 ? 'dogs' : 'dog';
-  const headingText = `${dogs.length} ${dogNoun} in your pack`;
-
-  useEffect(() => {
-    // GET request using fetch inside useEffect React hook. Gets dog pics using the prop breed.
-    var masterDogListURL = 'https://dog.ceo/api/breeds/list/all';
-    fetch(masterDogListURL)
-      .then(response => { return response.json() })
-      .then(response => {
-        setMasterDogList(Object.keys(response.message))
-        return
-      })
-  }, []); //runs again when breed is updated or changed (which will be never for existing dogs).
-
-  useEffect(() => {
-    if (typeof masterDogList !== 'undefined') {
-      var arr = [];
-      let filteredDogs = arrayFilterByArray(masterDogList, dogs)
-      for (var i = 0; i < filteredDogs.length; i++) {
-        arr.push({ 'name': filteredDogs[i].charAt(0).toUpperCase() + filteredDogs[i].slice(1), 'value': filteredDogs[i] });
-      }
-      setDogOptions(arr);
-    }
-  }, [masterDogList, dogs])
-
-  function deleteDog(breed) {
-    const sparedDogs = dogs.filter(dog => breed !== dog.breed);
-    setDogs(sparedDogs);
+// Load the saved pack (a list of breed names) from localStorage.
+function loadPack() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (Array.isArray(saved)) return saved.filter((b) => typeof b === "string");
+  } catch {
+    // ignore malformed storage
   }
-
-  function addDog(breed) {
-    const newDog = { breed: breed };
-    setDogs([...dogs, newDog]);
-  }
-
-  function arrayFilterByArray(input, criteria) {
-    const arr = input.filter(
-      function (f) {
-        return this.indexOf(f) < 0;
-      },
-      criteria.map(a => a.breed)
-    );
-    return arr;
-  }
-
-  var dogList = dogs.map(dog => (
-    <Dog
-      id={dog.breed}
-      breed={dog.breed}
-      key={dog.breed}
-      deleteDog={deleteDog} />
-  ));
-  return (
-    <div className="todoapp stack-large">
-      <title>DogMatic</title>
-      <h1 className="dogmatic-title">DogMatic</h1>
-      <DogSelect
-        masterDogList={masterDogList}
-        dogOptions={dogOptions}
-        addDog={addDog}
-        dogs={dogs} />
-      <div>
-        <RandomDog
-          dogs={dogs}
-          masterDogList={masterDogList}
-          addDog={addDog}
-          arrayFilterByArray={arrayFilterByArray}
-        />
-      </div>
-      <h2 id="list-heading">{headingText}</h2>
-      <ul
-        className="todo-list stack-large stack-exception"
-        aria-labelledby="list-heading"
-      >
-        {dogList}
-      </ul>
-    </div>
-  );
+  return [];
 }
 
-export default App;
+export default function App() {
+  const [pack, setPack] = useState(loadPack);     // breeds the user has added
+  const [allBreeds, setAllBreeds] = useState([]); // master list from the API
+  const [error, setError] = useState(null);
+
+  // Fetch the master breed list once on mount.
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`${API}/breeds/list/all`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data) => setAllBreeds(Object.keys(data.message)))
+      .catch((err) => {
+        if (err.name !== "AbortError") setError("Couldn't load the breed list. Try refreshing.");
+      });
+    return () => controller.abort();
+  }, []);
+
+  // Persist the pack whenever it changes, so it survives a refresh.
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(pack));
+  }, [pack]);
+
+  // Breeds not yet in the pack — what the search + random picker can offer.
+  const available = useMemo(
+    () => allBreeds.filter((breed) => !pack.includes(breed)),
+    [allBreeds, pack]
+  );
+
+  function addDog(breed) {
+    setPack((prev) => (prev.includes(breed) ? prev : [...prev, breed]));
+  }
+
+  function removeDog(breed) {
+    setPack((prev) => prev.filter((b) => b !== breed));
+  }
+
+  const noun = pack.length === 1 ? "dog" : "dogs";
+
+  return (
+    <main className="dogmatic">
+      <h1 className="dogmatic__title">DogMatic</h1>
+      <p className="dogmatic__intro">
+        Search the dog.ceo breed library and build your pack. Pick a favourite or
+        add a random breed — no duplicates allowed.
+      </p>
+
+      {error && <p className="dogmatic__error" role="alert">{error}</p>}
+
+      <div className="dogmatic__controls">
+        <DogSearch options={available} onAdd={addDog} />
+        <RandomDog available={available} onAdd={addDog} />
+      </div>
+
+      <h2 id="list-heading" className="dogmatic__count">
+        {pack.length} {noun} in your pack
+      </h2>
+
+      <ul className="pack" aria-labelledby="list-heading">
+        {pack.map((breed) => (
+          <Dog key={breed} breed={breed} onDelete={removeDog} />
+        ))}
+      </ul>
+    </main>
+  );
+}
