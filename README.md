@@ -4,7 +4,7 @@ Search the [dog.ceo](https://dog.ceo/) breed library and build your own pack of
 dogs. All images and breeds are credited to dog.ceo — thanks for hosting and
 maintaining the pack of dogs and API!
 
-**Live:** https://damonroberts95.github.io/reactive-dog/
+**Live:** https://damonroberts.co.uk/reactive-dog/
 
 ## Run locally
 
